@@ -41,6 +41,29 @@ $(document.body).on("click", ".gifButton", function() {
     giphyAPI(gameSer);
 });
 
+// Favorite functionality
+$(document.body).on("click", ".fa-star", function() {
+    var favStatus = $(this).attr("favorite-status");
+    var parentCard = $(this).attr("data-parent");
+    var parentCardID = "#" + parentCard;
+    console.log(parentCardID);
+    
+    // Add to Favorites section
+    if(favStatus === "No") {
+        $(this).addClass("fas").removeClass("far");
+        $(this).attr({'favorite-status': 'Yes'});
+        var newFavCard = $("<Div>", {id: "fav"+parentCard});
+        $(newFavCard).append($(parentCardID).html());
+        $("#favGifs").append(newFavCard);
+    } else {
+        // Remove from Favorites
+        $("[data-parent="+parentCard+"]").attr({'favorite-status': 'No'}).addClass("far").removeClass("fas");
+        var removeFav = $("#fav"+parentCard);
+        $(removeFav).remove();
+
+    }
+});
+
 // When user clicks a gif, toggle gif state
 $(document.body).on("click", ".card-img-top", function() {
     var gifState= $(this).attr("state");
@@ -68,7 +91,9 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gameSer + "&api_key=d
   .then(function(response) {
     var results = response.data;
     for (var i = 0; i < results.length; i++) {
-        var card = $("<div>", {class: 'card'});
+        var idTag= gameSer +i;
+        idTagFixed= idTag.split(' ').join('');
+        var card = $("<div>", {class: 'card', id: idTagFixed});
         var gifimage = $("<img>", {class: 'card-img-top img-fluid'});
         gifimage.attr("src", results[i].images.fixed_width_still.url);
         gifimage.attr({'animated-link': results[i].images.fixed_width.url});
@@ -79,12 +104,15 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gameSer + "&api_key=d
         cardTitle.text(results[i].title);
         var rating = results[i].rating;
         var cardRating = $("<p>").text("Rating: " + rating);
+        var favoriteBtn = $("<i class='far fa-star'></i>");
+        favoriteBtn.attr({'favorite-status': 'No', 'data-parent': idTagFixed});
         //var cardDownloadBtn = $("<a href='" + results[i].images.original.mp4 + "'download>Download Gif</a>");
         //cardDownloadBtn.addClass("btn btn-secondary btn-sm");
         //cardDownloadBtn.attr({'tabindex':'-1', 'role': 'button', 'aria-disabled': 'true'});
 
         // Build masonry card
         cardBody.append(cardTitle);
+        cardBody.append(favoriteBtn);
         cardBody.append(cardRating);
         //cardBody.append(cardDownloadBtn);
         card.append(gifimage);

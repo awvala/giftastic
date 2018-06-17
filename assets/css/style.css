@@ -36,3 +36,16 @@ p {
 .form-control {
     background-color: white;
 }
+
+.far {
+    color: black;
+}
+
+.fas {
+    color: blueviolet;
+}
+
+#favGifs {
+    color: black;
+    font-size: 12px;
+}
