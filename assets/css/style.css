@@ -49,3 +49,7 @@ p {
     color: black;
     font-size: 12px;
 }
+
+.favorites {
+    margin-bottom: 10px;
+}

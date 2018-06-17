@@ -3,7 +3,8 @@ var topics = ["Metal Gear", "Final Fantasy", "Nier", "Destiny", "Dragon Ball Z",
 var gifReturn = 10;
 
 $(document).ready (function buildButton() {
-    buildButton();    
+    buildButton();
+        //$("#favGifs").html(JSON.parse(localStorage.getItem("favorites")));
 
 // Build buttonBar
 function buildButton() {
@@ -52,7 +53,7 @@ $(document.body).on("click", ".fa-star", function() {
     if(favStatus === "No") {
         $(this).addClass("fas").removeClass("far");
         $(this).attr({'favorite-status': 'Yes'});
-        var newFavCard = $("<Div>", {id: "fav"+parentCard});
+        var newFavCard = $("<Div>", {id: "fav"+parentCard, class: "favorites"});
         $(newFavCard).append($(parentCardID).html());
         $("#favGifs").append(newFavCard);
     } else {
@@ -60,8 +61,13 @@ $(document.body).on("click", ".fa-star", function() {
         $("[data-parent="+parentCard+"]").attr({'favorite-status': 'No'}).addClass("far").removeClass("fas");
         var removeFav = $("#fav"+parentCard);
         $(removeFav).remove();
-
     }
+
+    // Save favorites to localStorage
+    //faveArray = [];
+    //var clone = 
+    //var storedFavs = $("#favGifs").children();
+    //localStorage.setItem("favorites",JSON.stringify(storedFavs));
 });
 
 // When user clicks a gif, toggle gif state
