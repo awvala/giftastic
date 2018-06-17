@@ -79,10 +79,14 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gameSer + "&api_key=d
         cardTitle.text(results[i].title);
         var rating = results[i].rating;
         var cardRating = $("<p>").text("Rating: " + rating);
+        //var cardDownloadBtn = $("<a href='" + results[i].images.original.mp4 + "'download>Download Gif</a>");
+        //cardDownloadBtn.addClass("btn btn-secondary btn-sm");
+        //cardDownloadBtn.attr({'tabindex':'-1', 'role': 'button', 'aria-disabled': 'true'});
 
         // Build masonry card
         cardBody.append(cardTitle);
         cardBody.append(cardRating);
+        //cardBody.append(cardDownloadBtn);
         card.append(gifimage);
         card.append(cardBody);
     
