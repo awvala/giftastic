@@ -62,12 +62,6 @@ $(document.body).on("click", ".fa-star", function() {
         var removeFav = $("#fav"+parentCard);
         $(removeFav).remove();
     }
-
-    // Save favorites to localStorage
-    //faveArray = [];
-    //var clone = 
-    //var storedFavs = $("#favGifs").children();
-    //localStorage.setItem("favorites",JSON.stringify(storedFavs));
 });
 
 // When user clicks a gif, toggle gif state
