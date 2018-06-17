@@ -1,28 +1,47 @@
 // Global variables
-topics = ["Metal Gear", "Final Fantasy", "Nier: Automata", "Destiny 2", "Dragon Ball FighterZ", "Stardew Valley", "The Witcher", "Dark Souls"];
+var topics = ["Metal Gear", "Final Fantasy", "Nier", "Destiny", "Dragon Ball Z", "Stardew Valley", "The Witcher", "Dark Souls", "The Legend of Zelda","Halo", "God Of War"];
+var gifReturn = 10;
 
-//Add new gif button
+$(document).ready (function buildButton() {
+    buildButton();    
+
+// Build buttonBar
+function buildButton() {
+    $("#buttonBar").html("");
+    for (i=0; i < topics.length; i++) {
+        var newSeries = topics[i];
+        var newButton = $("<button type='button'>");
+        newButton.addClass("btn btn-primary gifButton");
+        newButton.attr("gameSeries",newSeries);
+        newButton.attr("type", "button");
+        newButton.append(newSeries);
+        $("#buttonBar").append(newButton);
+        }
+}
+        
+// Add new gif button
 $("#search").on("click", function(event) {
     event.preventDefault();
 
     var newSeries = $("#addSeries").val().trim();
-    var newButton = $("<button type='button'>");
-    newButton.addClass("btn btn-primary gifButton");
-    newButton.attr("gameSeries",newSeries);
-    newButton.attr("type", "button");
-    newButton.append(newSeries);
-    $("#buttonBar").append(newButton);
+    topics.push(newSeries);
     $("#addSeries").val("");
-    giphyAPI(newSeries);
+    buildButton();
 });
 
-//When user clicks a .gifButton call giphy API
+// Change limit parameter of Giphy API Query
+$("#inputNumGif").on("change", function() {
+    gifReturn = $("#inputNumGif").val();
+    //console.log(gifReturn);
+});
+
+// When user clicks a .gifButton call giphy API
 $(document.body).on("click", ".gifButton", function() {
     var gameSer = $(this).attr("gameSeries");
     giphyAPI(gameSer);
 });
 
-//toggle gif animated state
+// When user clicks a gif, toggle gif state
 $(document.body).on("click", ".card-img-top", function() {
     var gifState= $(this).attr("state");
     var gifStill= $(this).attr("still-link");
@@ -37,12 +56,10 @@ $(document.body).on("click", ".card-img-top", function() {
     }  
 });
 
-
-//Query giphy API
+// Query Giphy API
 function giphyAPI (series) {
-
 var gameSer = series;
-var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gameSer + "&api_key=dc6zaTOxFJmzC&limit=10";
+var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gameSer + "&api_key=dc6zaTOxFJmzC&limit="+ gifReturn;
 
   $.ajax({
     url: queryURL,
@@ -58,19 +75,20 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gameSer + "&api_key=d
         gifimage.attr({'still-link': results[i].images.fixed_width_still.url});
         gifimage.attr({'state': "still"});
         var cardBody = $("<div>", {class: 'card-body'});
-        var cardtitle = $("<h4>", {class: 'card-title'});
-        cardtitle.text(results[i].title);
+        var cardTitle = $("<h4>", {class: 'card-title'});
+        cardTitle.text(results[i].title);
         var rating = results[i].rating;
         var cardRating = $("<p>").text("Rating: " + rating);
 
-        //Build masonry card
-        cardBody.append(cardtitle);
+        // Build masonry card
+        cardBody.append(cardTitle);
         cardBody.append(cardRating);
         card.append(gifimage);
         card.append(cardBody);
     
-        //Add card to Masonry grid
+        // Add card to masonry grid
         $(".card-columns").prepend(card);
-    }
-  })
-};
+        }
+    })
+    };
+});
